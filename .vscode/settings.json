@@ -1,0 +1,10 @@
+{
+    "cSpell.words": [
+        "dotenv",
+        "fastapi",
+        "uvicorn"
+    ],
+    "python.analysis.extraPaths": [
+        "./src"
+    ]
+}

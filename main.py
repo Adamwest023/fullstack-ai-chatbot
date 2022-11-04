@@ -1,28 +1,23 @@
-import os 
-from fastapi import APIRouter, FastAPI, WebSocket, Request
+from fastapi import FastAPI, Request
+import uvicorn
+import os
+from dotenv import load_dotenv
+from routes.chat import chat
 
-chat = APIRouter()
+load_dotenv()
 
-# @route POST/ tokem
-# @desc Route to generate chat token
-# @access Public
+api = FastAPI()
+api.include_router(chat)
 
-@chat.post('/token')
-async def token_generator(request: Request):
-    return None
+@api.get("/test")
+async def root():
+    return {"msg": "API is Online"}
 
-# @route   POST /refresh_token
-# @desc    Route to refresh token
-# @access  Public
 
-@chat.post('/refresh_token')
-async def refresh_token(request: Request):
-    return None
+if __name__ == "__main__":
+    if os.environ.get("APP_ENV") == "development":
+        uvicorn.run('main:api', host= "0.0.0.0", port=3500,
+                    workers=4, reload=True)
+    else:
+        pass
 
-# @route   Websocket /chat
-# @desc    Socket for chatbot
-# @access  Public
-
-@chat.websocket('/chat')
-async def websocket_endpoint(websocket: WebSocket = WebSocket):
-    return None
