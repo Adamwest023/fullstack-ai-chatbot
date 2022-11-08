@@ -1,10 +1,12 @@
 import os
-from fastapi import APIRouter, FastAPI, WebSocket,  Request, BackgroundTasks, HTTPException
+from fastapi import APIRouter, FastAPI, WebSocket,  Request, BackgroundTasks, HTTPException, Depends
 import uuid
 
 from ..socket.connection import ConnectionManager
+from ..socket.utils import get_token 
 
 chat = APIRouter()
+
 manager = ConnectionManager()
 
 # @route   POST /token
@@ -40,7 +42,7 @@ async def refresh_token(request: Request):
 
 
 @chat.websocket("/chat")
-async def websocket_endpoint(websocket: WebSocket):
+async def websocket_endpoint(websocket: WebSocket, token: str = Depends(get_token)):
     await manager.connect(websocket)
     try:
         while True:
