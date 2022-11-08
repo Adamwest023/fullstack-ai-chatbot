@@ -1,4 +1,4 @@
 worker/.env
-env
-.env
+worker/env
+
 DS_store
